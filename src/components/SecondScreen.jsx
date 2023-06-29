@@ -156,8 +156,11 @@ const SecondScreen = () => {
           setShowModal(true);
           setModalMessage("Oops! You didn't find them all.");
           return 0; // Set the timer to zero
-        } else {
+        } else if (prevTimer > 0){
           return prevTimer - 1;
+        }else{
+          clearInterval(interval); //Stop the interval if timer goes to zero
+          return 0; //Set timer to zero
         }
       });
     }, 1000);
@@ -175,7 +178,7 @@ const SecondScreen = () => {
     setIsMuted(true);
     setTimer(30);
     setGameOver(false);
-    //setGameCount(gameCount + 1); // Increment game count
+    setGameCount(gameCount + 1); // Increment game count
     stopTickingSound(); // Clear the ticking sound
     // Regenerate the card data
   const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
