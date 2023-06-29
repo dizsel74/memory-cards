@@ -33,6 +33,13 @@ const SecondScreen = () => {
       if (pairs[card1] === pairs[card2]) {
         setMatchedCards([...matchedCards, card1, card2]);
         playSound(correctSound);
+  
+        setShowModal(true);
+        setModalMessage("Nice! It's a match");
+  
+        setTimeout(() => {
+          setShowModal(false);
+        }, 700);
       } else {
         setFlippedCards([...flippedCards, card2]);
         playSound(incorrectSound);
@@ -41,15 +48,16 @@ const SecondScreen = () => {
           setFlippedCards([]);
           setShowModal(true);
           setModalMessage('Sorry, but this is not a match');
-           setTimeout(() => {
+          setTimeout(() => {
             setShowModal(false);
-          }, 700); // Adjust the delay here (in milliseconds)
-        }, 700); // Adjust the delay here (in milliseconds)
+          }, 700);
+        }, 700);
       }
     } else {
       setFlippedCards([index]);
     }
   };
+  
   
 
 
@@ -104,11 +112,22 @@ const SecondScreen = () => {
 
   const startTimer = () => {
     const interval = setInterval(() => {
-      setTimer((prevTimer) => prevTimer - 1);
+      setTimer((prevTimer) => {
+        if (prevTimer === 1) {
+          clearInterval(interval); // Stop the interval when timer reaches zero
+          setGameOver(true);
+          setShowModal(true);
+          setModalMessage("Oops! You didn't find them all.");
+          return 0; // Set the timer to zero
+        } else {
+          return prevTimer - 1;
+        }
+      });
     }, 1000);
-
+  
     return interval;
   };
+  
 
   const resetGame = () => {
     setCards([]);
@@ -164,7 +183,7 @@ const SecondScreen = () => {
         setShowModal(true);
         setModalMessage("Oops! You didn't find them all.");
         // if (backgroundAudio){
-        //   backgroundAudio.pause();
+          //backgroundAudio.pause();
         // }
       }, 1000);
     }
@@ -205,31 +224,15 @@ const SecondScreen = () => {
 
   return (
     <div>
-       {/* <Modal open={showModal} onClose={handleModalClose}>
+      <Modal open={showModal} onClose={handleModalClose}>
         <div className="modal-content">
           <h2>{modalMessage}</h2>
-          {gameOver ? (
-            <Button variant="contained" onClick={handleModalClose}>
-              Play Again
-            </Button>
-          ) : (
-            <Button variant="contained" disabled>
-              Play Again
-            </Button>
-          )}
+          {gameOver && timer <= 0 ? 
+          ( <Button variant="contained" onClick={handleModalClose}>Play Again</Button>) 
+            : ''
+          }
         </div>
-      </Modal>  */}
-
-<Modal open={showModal} onClose={handleModalClose}>
-  <div className="modal-content">
-    <h2>{modalMessage}</h2>
-    {gameOver && timer === 0 ? 
-    ( <Button variant="contained" onClick={handleModalClose}>Play Again</Button>) 
-      : 
-    ( <Button variant="contained" disabled>apagado</Button>)
-    }
-  </div>
-</Modal>
+      </Modal>
 
       <Grid container spacing={2} className="game-grid">
         {cards.map((card, index) => (

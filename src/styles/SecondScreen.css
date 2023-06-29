@@ -76,15 +76,18 @@
   align-items: center;
   justify-content: center;
   width: 300px;
-  height: 200px;
+  height: 100px;
   background-color: white;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
+  margin: 5% auto;
 }
 
 .modal-content h2 {
   margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+
 }
 
 button.mute-button {
@@ -92,7 +95,6 @@ button.mute-button {
   top: 0px;
   right: 10px;
   padding: 10px;
-  
   border-radius: 5px;
   cursor: pointer;
   color: #fbfbfb;!
