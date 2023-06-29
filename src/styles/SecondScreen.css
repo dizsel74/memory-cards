@@ -1,0 +1,112 @@
+
+.game-grid {
+  margin-top: 20px !important;
+  height: 100vh;
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  cursor: pointer;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.5s;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  height: 150px;
+  width: 100px;
+  border-radius: 10px;
+  border: solid black 1px;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background-color: #fbfbfb;
+  height: 150px;
+  width: 100px; border-radius: 10px;
+  border: solid black 1px;
+}
+
+.card.flipped .card-front {
+  transform: rotateY(-180deg);
+}
+
+.card.flipped .card-back {
+  transform: rotateY(0deg);
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.question-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  color: yellow;
+  font-size: 5rem;
+  font-family: 'Robot', sans-serif;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 200px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+button.mute-button {
+  position: fixed;
+  top: 0px;
+  right: 10px;
+  padding: 10px;
+  
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fbfbfb;!
+}
+
+.timer {
+  position: fixed;
+  top: 0px;
+  left: 10px;
+  padding: 10px;
+  
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Roboto',sans-serif;
+  color: #fbfbfb;
+}
+
