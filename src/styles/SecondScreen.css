@@ -112,3 +112,10 @@ button.mute-button {
   color: #fbfbfb;
 }
 
+.green-text {
+  color: green;
+}
+
+.red-text {
+  color: red;
+}

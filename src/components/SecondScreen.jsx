@@ -58,16 +58,78 @@ const SecondScreen = () => {
     }
   };
   
+  // const handleCardClick = (index) => {
+  //   if (flippedCards.includes(index) || matchedCards.includes(index) || gameOver) {
+  //     return;
+  //   }
   
-
-
+  //   flipCard(index);
+  
+  //   if (flippedCards.length === 1) {
+  //     const card1 = flippedCards[0];
+  //     const card2 = index;
+  
+  //     if (pairs[card1] === pairs[card2]) {
+  //       setMatchedCards([...matchedCards, card1, card2]);
+  //       playSound(correctSound);
+  //     } else {
+  //       setFlippedCards([...flippedCards, card2]);
+  //       playSound(incorrectSound);
+  
+  //       setTimeout(() => {
+  //         setFlippedCards([]);
+  //         setShowModal(true);
+  //         setModalMessage('Sorry, but this is not a match');
+  //         setTimeout(() => {
+  //           setShowModal(false);
+  //         }, 700);
+  //       }, 700);
+  //     }
+  //   }
+  // };
   const handleCardClick = (index) => {
     if (flippedCards.includes(index) || matchedCards.includes(index) || gameOver) {
       return;
     }
-
+  
     flipCard(index);
+  
+    if (flippedCards.length === 1) {
+      const card1 = flippedCards[0];
+      const card2 = index;
+  
+      if (pairs[card1] === pairs[card2]) {
+        setMatchedCards([...matchedCards, card1, card2]);
+        playSound(correctSound);
+  
+        setTimeout(() => {
+          if (matchedCards.length === pairs.length) {
+            setGameOver(true);
+  
+            setTimeout(() => {
+              setShowModal(true);
+              setModalMessage("Nice! It's a match");
+              playSound(correctSound);
+            }, 700);
+          }
+        }, 700);
+      } else {
+        setFlippedCards([...flippedCards, card2]);
+        playSound(incorrectSound);
+  
+        setTimeout(() => {
+          setFlippedCards([]);
+          setShowModal(true);
+          setModalMessage('Sorry, but this is not a match');
+          setTimeout(() => {
+            setShowModal(false);
+          }, 700);
+        }, 700);
+      }
+    }
   };
+  
+  
 
   const handleModalClose = () => {
     if (gameOver) {
@@ -226,7 +288,9 @@ const SecondScreen = () => {
     <div>
       <Modal open={showModal} onClose={handleModalClose}>
         <div className="modal-content">
-          <h2>{modalMessage}</h2>
+        <h2 
+        className={modalMessage === "Nice! It's a match" ? 'green-text' : modalMessage == "Sorry, but this is not a match" ? 'red-text' : ''}>{modalMessage}
+        </h2>
           {gameOver && timer <= 0 ? 
           ( <Button variant="contained" onClick={handleModalClose}>Play Again</Button>) 
             : ''
