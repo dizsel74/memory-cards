@@ -176,15 +176,17 @@ const SecondScreen = () => {
     setTimer(30);
     setGameOver(false);
     //setGameCount(gameCount + 1); // Increment game count
-
+    stopTickingSound(); // Clear the ticking sound
     // Regenerate the card data
   const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
   const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
   setCards(cardData);
+  startTimer();
+
   };
 
   
-
+//ShuffledPairs
   useEffect(() => {
     const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
     const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
@@ -196,7 +198,7 @@ const SecondScreen = () => {
       // setModalMessage('Game starts now!');
    // }, 1000);
   }, []);
-
+//flippedCards
   useEffect(() => {
     if (flippedCards.length === 2) {
       const interval = setTimeout(() => {
@@ -234,10 +236,14 @@ const SecondScreen = () => {
     }
   }, [timer, gameOver]);
 
+  //startTimer
   useEffect(() => {
     const interval = startTimer();
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      stopTickingSound();
+    };
   }, []);
 
   useEffect(() => {
