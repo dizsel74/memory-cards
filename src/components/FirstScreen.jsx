@@ -13,7 +13,7 @@ const FirstScreen = () => {
 
   const handleButtonClick = () => {
     console.log('Navigating to the second screen...');
-    setNavigateToSecondScreen(true); // Set the state to trigger navigation
+    setNavigateToSecondScreen(true); 
   };
 
   useEffect(() => {
