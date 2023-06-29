@@ -22,6 +22,7 @@ const SecondScreen = () => {
   const [gameOver, setGameOver] = useState(false);
   const [backgroundAudio, setBackgroundAudio] = useState(null);
   const tickingAudio = new Audio(tickingSound);
+  const [gameCount, setGameCount] = useState(0);
 
   const pairs = ['star', 'star', 'moon', 'moon', 'sun', 'sun', 'comet', 'comet'];
 
@@ -31,28 +32,29 @@ const SecondScreen = () => {
       const card1 = flippedCards[0];
       const card2 = index;
   
-      if (cards[card1].pair === cards[card2].pair) {
-        // Match found
-        setMatchedCards([...matchedCards, card1, card2]);
-        playSound(correctSound);
-        setShowModal(true);
-        setModalMessage("Nice! It's a match");
-  
-        setTimeout(() => {
-          setShowModal(false);
-        }, 700);
-      } else {
-        // No match
-        setTimeout(() => {
-          setFlippedCards([]);
+        if (cards[card1].pair === cards[card2].pair) {
+          // Match found
+          setMatchedCards([...matchedCards, card1, card2]);
+          playSound(correctSound);
           setShowModal(true);
-          setModalMessage('Sorry, but this is not a match');
-  
+          setModalMessage("Nice! It's a match en flipCard");
+    
           setTimeout(() => {
             setShowModal(false);
+          }, 800);
+        } 
+        else {
+          // No match
+          setTimeout(() => {
+            setFlippedCards([]);
+            setShowModal(true);
+            setModalMessage('Sorry, but this is not a match en flipCard');
+    
+            setTimeout(() => {
+              setShowModal(false);
+            }, 700);
           }, 700);
-        }, 700);
-      }
+        }
     } else {
       setFlippedCards([index]);
     }
@@ -76,23 +78,25 @@ const SecondScreen = () => {
   
         setTimeout(() => {
           if (matchedCards.length === pairs.length) {
-            // setGameOver(true);
+            setGameOver(true);
   
             setTimeout(() => {
               setShowModal(true);
-              setModalMessage("Nice! It's a match");
+              setModalMessage("Nice! It's a match nunca");
               playSound(correctSound);
             }, 700);
           }
         }, 700);
-      } else {
+      }
+      
+      else {
         setFlippedCards([...flippedCards, card2]);
         playSound(incorrectSound);
   
         setTimeout(() => {
           setFlippedCards([]);
           setShowModal(true);
-          setModalMessage('Sorry, but this is not a match');
+          setModalMessage('Sorry, but this is not a match *******');
           setTimeout(() => {
             setShowModal(false);
           }, 700);
@@ -171,7 +175,15 @@ const SecondScreen = () => {
     setIsMuted(true);
     setTimer(30);
     setGameOver(false);
+    //setGameCount(gameCount + 1); // Increment game count
+
+    // Regenerate the card data
+  const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
+  const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
+  setCards(cardData);
   };
+
+  
 
   useEffect(() => {
     const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
@@ -200,7 +212,7 @@ const SecondScreen = () => {
       setTimeout(() => {
         setShowModal(true);
         setModalMessage('You did it!');
-      }, 800);
+      }, 1200);
     }
 
   }, [flippedCards, matchedCards]);
@@ -260,21 +272,25 @@ const SecondScreen = () => {
       <Modal open={showModal} onClose={handleModalClose}>
         <div className="modal-content">
         <h2 
-        className={modalMessage === "Nice! It's a match" ? 'green-text' : modalMessage == "Sorry, but this is not a match" ? 'red-text' : ''}>{modalMessage}
+        className={
+          modalMessage === "Nice! It's a match" ? 'green-text' : modalMessage == "Sorry, but this is not a match" ? 'red-text' : ''}>{modalMessage}
         </h2>
-          {gameOver && timer <= 0 ? 
-          ( <Button 
-            className="play-again-button"
-            variant="contained" 
-            onClick={handleModalClose}>Play Again</Button>) 
-            : ''
+          {gameOver && (timer <= 0  || modalMessage === "You did it!") && 
+          ( 
+            <Button 
+              className="play-again-button"
+              variant="contained" 
+              onClick={handleModalClose}>Play Again</Button>
+              //onClick={resetGame}>Play Again</Button>
+            ) 
+            
           }
         </div>
       </Modal>
 
       <Grid container spacing={2} className="game-grid">
         {cards.map((card, index) => (
-          <Grid item xs={3} key={index}>
+          <Grid item xs={3} key={`${gameCount}-${index}`}> 
             <div
               className={`card ${flippedCards.includes(index) || matchedCards.includes(index) ? 'flipped' : ''}`}
               onClick={() => handleCardClick(index)}
