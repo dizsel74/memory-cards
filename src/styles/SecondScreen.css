@@ -10,10 +10,13 @@
   width: 100%;
   height: 100%;
   perspective: 1000px;
-  cursor: pointer;
   display:flex;
   justify-content: center;
   align-items: center;
+}
+
+.card-front{
+  cursor: pointer;
 }
 
 .card-front,

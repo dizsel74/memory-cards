@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Button, Slide, Modal, Grid } from '@mui/material';
+import { IconButton, Button, Modal, Grid } from '@mui/material';
 import { VolumeOff, VolumeUp } from '@mui/icons-material';
 import star from '../assets/star.svg';
 import moon from '../assets/moon.svg';
@@ -168,6 +168,7 @@ const SecondScreen = () => {
     return interval;
   };
   
+  
 
   const resetGame = () => {
     setCards([]);
@@ -232,9 +233,6 @@ const SecondScreen = () => {
       setTimeout(() => {
         setShowModal(true);
         setModalMessage("Oops! You didn't find them all.");
-        // if (backgroundAudio){
-          //backgroundAudio.pause();
-        // }
       }, 700);
     }
   }, [timer, gameOver]);
@@ -248,7 +246,7 @@ const SecondScreen = () => {
       stopTickingSound();
     };
   }, []);
-
+   //mute
   useEffect(() => {
     if (!isMuted) {
       if (!backgroundAudio) {
@@ -263,7 +261,7 @@ const SecondScreen = () => {
       backgroundAudio.pause();
     }
   }, [isMuted, backgroundAudio]);
-
+//timer
   useEffect(() => {
     if (isMuted) {
       stopTickingSound();
@@ -278,19 +276,25 @@ const SecondScreen = () => {
 
   return (
     <div>
-      <Modal open={showModal} onClose={handleModalClose}>
-        <div className="modal-content">
-        <h2 
-        className={
-          modalMessage === "Nice! It's a match" ? 'green-text' : modalMessage == "Sorry, but this is not a match" ? 'red-text' : ''}>{modalMessage}
-        </h2>
+      <Modal open={showModal} onClose={handleModalClose} >
+        <div className="modal-content" >
+        <h2
+      className={
+        modalMessage.includes("Nice! It's a match")
+          ? 'green-text'
+          : modalMessage.includes("Sorry, but this is not a match")
+          ? 'red-text'
+          : ''
+      }
+    >
+      {modalMessage}
+    </h2>
           {gameOver && (timer <= 0  || modalMessage === "You did it!") && 
           ( 
             <Button 
               className="play-again-button"
               variant="contained" 
               onClick={handleModalClose}>Play Again</Button>
-              //onClick={resetGame}>Play Again</Button>
             ) 
             
           }
@@ -302,9 +306,8 @@ const SecondScreen = () => {
           <Grid item xs={3} key={`${gameCount}-${index}`}> 
             <div
               className={`card ${flippedCards.includes(index) || matchedCards.includes(index) ? 'flipped' : ''}`}
-              onClick={() => handleCardClick(index)}
             >
-              <div className="card-front">
+              <div className="card-front" onClick={() => handleCardClick(index)}>
                 <span className="question-mark">?</span>
               </div>
               <div className="card-back">
