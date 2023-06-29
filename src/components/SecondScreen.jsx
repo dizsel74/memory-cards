@@ -25,15 +25,16 @@ const SecondScreen = () => {
 
   const pairs = ['star', 'star', 'moon', 'moon', 'sun', 'sun', 'comet', 'comet'];
 
+  
   const flipCard = (index) => {
     if (flippedCards.length === 1) {
       const card1 = flippedCards[0];
       const card2 = index;
   
-      if (pairs[card1] === pairs[card2]) {
+      if (cards[card1].pair === cards[card2].pair) {
+        // Match found
         setMatchedCards([...matchedCards, card1, card2]);
         playSound(correctSound);
-  
         setShowModal(true);
         setModalMessage("Nice! It's a match");
   
@@ -41,13 +42,12 @@ const SecondScreen = () => {
           setShowModal(false);
         }, 700);
       } else {
-        setFlippedCards([...flippedCards, card2]);
-        playSound(incorrectSound);
-  
+        // No match
         setTimeout(() => {
           setFlippedCards([]);
           setShowModal(true);
           setModalMessage('Sorry, but this is not a match');
+  
           setTimeout(() => {
             setShowModal(false);
           }, 700);
@@ -58,35 +58,7 @@ const SecondScreen = () => {
     }
   };
   
-  // const handleCardClick = (index) => {
-  //   if (flippedCards.includes(index) || matchedCards.includes(index) || gameOver) {
-  //     return;
-  //   }
-  
-  //   flipCard(index);
-  
-  //   if (flippedCards.length === 1) {
-  //     const card1 = flippedCards[0];
-  //     const card2 = index;
-  
-  //     if (pairs[card1] === pairs[card2]) {
-  //       setMatchedCards([...matchedCards, card1, card2]);
-  //       playSound(correctSound);
-  //     } else {
-  //       setFlippedCards([...flippedCards, card2]);
-  //       playSound(incorrectSound);
-  
-  //       setTimeout(() => {
-  //         setFlippedCards([]);
-  //         setShowModal(true);
-  //         setModalMessage('Sorry, but this is not a match');
-  //         setTimeout(() => {
-  //           setShowModal(false);
-  //         }, 700);
-  //       }, 700);
-  //     }
-  //   }
-  // };
+
   const handleCardClick = (index) => {
     if (flippedCards.includes(index) || matchedCards.includes(index) || gameOver) {
       return;
@@ -104,7 +76,7 @@ const SecondScreen = () => {
   
         setTimeout(() => {
           if (matchedCards.length === pairs.length) {
-            setGameOver(true);
+            // setGameOver(true);
   
             setTimeout(() => {
               setShowModal(true);
@@ -130,7 +102,6 @@ const SecondScreen = () => {
   };
   
   
-
   const handleModalClose = () => {
     if (gameOver) {
       resetGame();
@@ -208,10 +179,10 @@ const SecondScreen = () => {
 
     setCards(cardData);
 
-    setTimeout(() => {
+    //setTimeout(() => {
       // setShowModal(true);
       // setModalMessage('Game starts now!');
-    }, 1000);
+   // }, 1000);
   }, []);
 
   useEffect(() => {
@@ -247,7 +218,7 @@ const SecondScreen = () => {
         // if (backgroundAudio){
           //backgroundAudio.pause();
         // }
-      }, 1000);
+      }, 700);
     }
   }, [timer, gameOver]);
 
@@ -292,7 +263,10 @@ const SecondScreen = () => {
         className={modalMessage === "Nice! It's a match" ? 'green-text' : modalMessage == "Sorry, but this is not a match" ? 'red-text' : ''}>{modalMessage}
         </h2>
           {gameOver && timer <= 0 ? 
-          ( <Button variant="contained" onClick={handleModalClose}>Play Again</Button>) 
+          ( <Button 
+            className="play-again-button"
+            variant="contained" 
+            onClick={handleModalClose}>Play Again</Button>) 
             : ''
           }
         </div>
@@ -302,7 +276,7 @@ const SecondScreen = () => {
         {cards.map((card, index) => (
           <Grid item xs={3} key={index}>
             <div
-              className={`card ${flippedCards.includes(index) ? 'flipped' : ''}`}
+              className={`card ${flippedCards.includes(index) || matchedCards.includes(index) ? 'flipped' : ''}`}
               onClick={() => handleCardClick(index)}
             >
               <div className="card-front">

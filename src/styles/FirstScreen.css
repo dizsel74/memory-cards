@@ -44,17 +44,13 @@
 }
 
 .start-button {
-  /* transform: translateY(100%); */
+ 
   opacity: 1;
-  /* transition: transform 0.5s, opacity 0.5s; */
+  
 }
 
 .start-button.bounce-button {
   animation: bounce 0.5s linear infinite;
 }
 
-/* .show-button {
-  transform: translateY(0); 
-  opacity: 1;
-  animation: slide-up 0.5s forwards; 
-} */
+
