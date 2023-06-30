@@ -26,6 +26,8 @@ const SecondScreen = () => {
 
   const pairs = ['star', 'star', 'moon', 'moon', 'sun', 'sun', 'comet', 'comet'];
 
+  const [isAllPairsFound, setIsAllPairsFound] = useState(false);
+
   
   const flipCard = (index) => {
 
@@ -51,10 +53,11 @@ const SecondScreen = () => {
       
         setTimeout(() => {
           setFlippedCards([]);
+         // if(!matchedCards.includes(card1) && !matchedCards.includes(card2)){
           setShowModal(true);
           setModalMessage('Sorry, but this is not a match.');
           playSound(incorrectSound);
-  
+       // }
           setTimeout(() => {
             setShowModal(false);
           }, 700);
@@ -118,21 +121,21 @@ const SecondScreen = () => {
     const interval = setInterval(() => {
       setTimer((prevTimer) => {
         if (prevTimer === 1) {
+
+          if (prevTimer === 1) {
+            clearInterval(interval); // Stop the interval when timer reaches zero
+            setGameOver(true);
+          
+            if (!isAllPairsFound ) {
+              setShowModal(true);
+              setModalMessage("Oops! You didn't find them all.");
+            }
+            return 0; // Set the timer to zero
+          }
+          
           clearInterval(interval); // Stop the interval when timer reaches zero
           setGameOver(true);
          
-          if(pairs.length < 8 ){
-            setShowModal(true);
-            setModalMessage("Oops! You didn't find them all.");
-          }
-
-// console.log('tiempo-'+timer);
-// console.log('gameOver-'+gameOver);
-// console.log('Larog de cartas encontradas-'+matchedCards.length);
-// console.log('Cartas encontradas-'+matchedCards);
-// console.log('largo de pares-'+pairs.length);
-// console.log('pares-'+pairs);
-
           return 0; // Set the timer to zero
         } else if (prevTimer > 0){
           return prevTimer - 1;
@@ -156,7 +159,6 @@ const SecondScreen = () => {
     setTimer(30);
     setGameOver(false);
     setGameCount(gameCount + 1); // Increment game count
-    //stopTickingSound(); // Clear the ticking sound
     // Regenerate the card data
   const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
   const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
@@ -164,6 +166,19 @@ const SecondScreen = () => {
   startTimer();
 
   };
+
+////////////////////////////////////
+useEffect(() => {
+  if (matchedCards.length === pairs.length) {
+    setIsAllPairsFound(true);
+    setGameOver(true);
+    setTimeout(() => {
+      setShowModal(true);
+      setModalMessage('You did it!');
+    }, 2000);
+  }
+}, [matchedCards, pairs.length]);
+//////////////////////////////////
 
 //ShuffledPairs
   useEffect(() => {
@@ -239,16 +254,15 @@ const SecondScreen = () => {
       <Modal open={showModal} onClose={handleModalClose} >
         <div className="modal-content" >
         <h2
-      className={
-        modalMessage.includes("Nice! It's a match")
-          ? 'green-text'
-          : modalMessage.includes("Sorry, but this is not a match")
-          ? 'red-text'
-          : ''
-      }
-    >
-      {modalMessage}
-    </h2>
+          className={
+             modalMessage.includes("Nice! It's a match")
+             ? 'green-text'
+             : modalMessage.includes("Sorry, but this is not a match")
+             ? 'red-text'
+             : ''
+          }>
+          {modalMessage}
+        </h2>
           {gameOver && (timer <= 0  || modalMessage === "You did it!") && 
           ( 
             <Button 
@@ -256,7 +270,6 @@ const SecondScreen = () => {
               variant="contained" 
               onClick={handleModalClose}>Play Again</Button>
             ) 
-            
           }
         </div>
       </Modal>
