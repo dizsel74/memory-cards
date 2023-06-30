@@ -39,7 +39,8 @@ const SecondScreen = () => {
           playSound(correctSound);
           setShowModal(true);
           setModalMessage("Nice! It's a match.");
-    
+          setFlippedCards([]);
+  
           setTimeout(() => {
             setShowModal(false);
           }, 800);
@@ -47,7 +48,7 @@ const SecondScreen = () => {
       
         else {
         setFlippedCards([...flippedCards, card2]);
-        
+      
         setTimeout(() => {
           setFlippedCards([]);
           setShowModal(true);
@@ -120,10 +121,9 @@ const SecondScreen = () => {
           clearInterval(interval); // Stop the interval when timer reaches zero
           setGameOver(true);
          
-          if(pairs.length < 8){
+          if(pairs.length < 8 ){
             setShowModal(true);
             setModalMessage("Oops! You didn't find them all.");
-            console.log('hola');
           }
 
 // console.log('tiempo-'+timer);
@@ -156,7 +156,7 @@ const SecondScreen = () => {
     setTimer(30);
     setGameOver(false);
     setGameCount(gameCount + 1); // Increment game count
-    stopTickingSound(); // Clear the ticking sound
+    //stopTickingSound(); // Clear the ticking sound
     // Regenerate the card data
   const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
   const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
