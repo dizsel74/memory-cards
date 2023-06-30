@@ -21,7 +21,9 @@ const SecondScreen = () => {
   const [timer, setTimer] = useState(30);
   const [gameOver, setGameOver] = useState(false);
   const [backgroundAudio, setBackgroundAudio] = useState(null);
-  const tickingAudio = new Audio(tickingSound);
+ // const tickingAudio = new Audio(tickingSound);
+ const [tickingAudio, setTickingAudio] = useState(new Audio(tickingSound));
+
   const [gameCount, setGameCount] = useState(0);
 
  
@@ -146,7 +148,7 @@ const SecondScreen = () => {
           return prevTimer - 1;
         }else{
           clearInterval(interval); //Stop the interval if timer goes to zero
-          return 0; //Set timer to cero
+          return 0; //Set timer to ero
         }
       });
     }, 800);
@@ -177,12 +179,15 @@ const SecondScreen = () => {
 useEffect(() => {
   if (matchedCards.length === pairs.length) {
     setIsAllPairsFound(true);
-    setGameOver(true);
+    setGameOver(true); 
+
+    stopTickingSound(); // Stop the ticking sound
+
     setTimeout(() => {
       setShowModal(true);
       setModalMessage('You did it!'); 
-    }, 1000);
-    
+    }, 3000);
+                                                 
   }
 
 }, [matchedCards, pairs.length]);
