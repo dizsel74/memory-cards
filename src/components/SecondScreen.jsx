@@ -24,6 +24,7 @@ const SecondScreen = () => {
   const tickingAudio = new Audio(tickingSound);
   const [gameCount, setGameCount] = useState(0);
 
+ 
   const pairs = ['star', 'star', 'moon', 'moon', 'sun', 'sun', 'comet', 'comet'];
 
   const [isAllPairsFound, setIsAllPairsFound] = useState(false);
@@ -53,11 +54,11 @@ const SecondScreen = () => {
       
         setTimeout(() => {
           setFlippedCards([]);
-         // if(!matchedCards.includes(card1) && !matchedCards.includes(card2)){
+
           setShowModal(true);
           setModalMessage('Sorry, but this is not a match.');
           playSound(incorrectSound);
-       // }
+
           setTimeout(() => {
             setShowModal(false);
           }, 700);
@@ -118,15 +119,17 @@ const SecondScreen = () => {
   };
 
   const startTimer = () => {  
+ 
     const interval = setInterval(() => {
+      
       setTimer((prevTimer) => {
         if (prevTimer === 1) {
 
           if (prevTimer === 1) {
             clearInterval(interval); // Stop the interval when timer reaches zero
             setGameOver(true);
-          
-            if (!isAllPairsFound ) {
+            
+            if (!isAllPairsFound && modalMessage !== 'You did it') {
               setShowModal(true);
               setModalMessage("Oops! You didn't find them all.");
             }
@@ -144,8 +147,8 @@ const SecondScreen = () => {
           return 0; //Set timer to zero
         }
       });
-    }, 1000);
-  
+    }, 800);
+    
     return interval;
   };
   
@@ -158,7 +161,7 @@ const SecondScreen = () => {
     setIsMuted(true);
     setTimer(30);
     setGameOver(false);
-    setGameCount(gameCount + 1); // Increment game count
+    setGameCount(gameCount + 1);
     // Regenerate the card data
   const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
   const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
@@ -168,6 +171,7 @@ const SecondScreen = () => {
   };
 
 ////////////////////////////////////
+//You did it
 useEffect(() => {
   if (matchedCards.length === pairs.length) {
     setIsAllPairsFound(true);
@@ -176,8 +180,12 @@ useEffect(() => {
       setShowModal(true);
       setModalMessage('You did it!');
     }, 2000);
+    
   }
+
 }, [matchedCards, pairs.length]);
+
+
 //////////////////////////////////
 
 //ShuffledPairs
@@ -200,18 +208,17 @@ useEffect(() => {
       setTimeout(() => {
         setShowModal(true);
         setModalMessage('You did it!');
-      }, 1200);
+      }, 7000);
     }
 
   }, [flippedCards, matchedCards]);
-
+//ticking
   useEffect(() => {
     if (timer === 10 && !gameOver) {
       playTickingSound();
     }
 
   }, [timer, gameOver]);
-
   //startTimer
   useEffect(() => {
     const interval = startTimer();
