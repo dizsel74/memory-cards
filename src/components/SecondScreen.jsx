@@ -119,10 +119,12 @@ const SecondScreen = () => {
   };
 
   const startTimer = () => {  
- 
+    
+   
     const interval = setInterval(() => {
       
       setTimer((prevTimer) => {
+        
         if (prevTimer === 1) {
 
           if (prevTimer === 1) {
@@ -144,7 +146,7 @@ const SecondScreen = () => {
           return prevTimer - 1;
         }else{
           clearInterval(interval); //Stop the interval if timer goes to zero
-          return 0; //Set timer to zero
+          return 0; //Set timer to cero
         }
       });
     }, 800);
@@ -178,8 +180,8 @@ useEffect(() => {
     setGameOver(true);
     setTimeout(() => {
       setShowModal(true);
-      setModalMessage('You did it!');
-    }, 2000);
+      setModalMessage('You did it!'); 
+    }, 1000);
     
   }
 
