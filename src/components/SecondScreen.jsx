@@ -71,45 +71,7 @@ const SecondScreen = () => {
   
     flipCard(index);
   };
-    // if (flippedCards.length === 1) {
-    //   const card1 = flippedCards[0];
-    //   const card2 = index;
-  
-    //   // if (pairs[card1] === pairs[card2]) {
-    //   //   setMatchedCards([...matchedCards, card1, card2]);
-    //   //   playSound(correctSound);
-  
-    //   //   // setTimeout(() => {
-    //   //   //   if (matchedCards.length === pairs.length) {
-    //   //   //     setGameOver(true);
-  
-    //   //   //     setTimeout(() => {
-    //   //   //       setShowModal(true);
-    //   //   //       setModalMessage("Nice! It's a match nunca");
-    //   //   //       playSound(correctSound);
-    //   //   //     }, 700);
-    //   //   //   }
-    //   //   // }, 700);
-    //   // }
-      
-    //   // else {
-    //   //   setFlippedCards([...flippedCards, card2]);
-        
-    //   //   setTimeout(() => {
-    //   //     setFlippedCards([]);
-    //   //     setShowModal(true);
-    //   //     setModalMessage('Sorry, but this is not a match *******');
-    //   //     playSound(incorrectSound);
-  
-    //   //     setTimeout(() => {
-    //   //       setShowModal(false);
-    //   //     }, 700);
-    //   //   }, 700);
-    //   // }
-    // }
-  // };
-  
-  
+   
   const handleModalClose = () => {
     if (gameOver) {
       resetGame();
@@ -151,14 +113,26 @@ const SecondScreen = () => {
     tickingAudio.currentTime = 0;
   };
 
-  const startTimer = () => {
+  const startTimer = () => {  
     const interval = setInterval(() => {
       setTimer((prevTimer) => {
         if (prevTimer === 1) {
           clearInterval(interval); // Stop the interval when timer reaches zero
           setGameOver(true);
-          setShowModal(true);
-          setModalMessage("Oops! You didn't find them all.");
+         
+          if(pairs.length < 8){
+            setShowModal(true);
+            setModalMessage("Oops! You didn't find them all.");
+            console.log('hola');
+          }
+
+// console.log('tiempo-'+timer);
+// console.log('gameOver-'+gameOver);
+// console.log('Larog de cartas encontradas-'+matchedCards.length);
+// console.log('Cartas encontradas-'+matchedCards);
+// console.log('largo de pares-'+pairs.length);
+// console.log('pares-'+pairs);
+
           return 0; // Set the timer to zero
         } else if (prevTimer > 0){
           return prevTimer - 1;
@@ -172,8 +146,6 @@ const SecondScreen = () => {
     return interval;
   };
   
-  
-
   const resetGame = () => {
     setCards([]);
     setFlippedCards([]);
@@ -193,18 +165,11 @@ const SecondScreen = () => {
 
   };
 
-  
 //ShuffledPairs
   useEffect(() => {
     const shuffledPairs = pairs.sort(() => 0.5 - Math.random());
     const cardData = shuffledPairs.map((pair) => ({ pair, flipped: false }));
-
     setCards(cardData);
-
-    //setTimeout(() => {
-      // setShowModal(true);
-      // setModalMessage('Game starts now!');
-   // }, 1000);
   }, []);
 //flippedCards
   useEffect(() => {
@@ -212,13 +177,11 @@ const SecondScreen = () => {
       const interval = setTimeout(() => {
         flipCard(-1);
       }, 800);
-
       return () => clearTimeout(interval);
     }
 
     if (matchedCards.length === pairs.length) {
       setGameOver(true);
-
       setTimeout(() => {
         setShowModal(true);
         setModalMessage('You did it!');
@@ -232,13 +195,6 @@ const SecondScreen = () => {
       playTickingSound();
     }
 
-    if (timer === 0 && !gameOver) {
-      setGameOver(true);
-      setTimeout(() => {
-        setShowModal(true);
-        setModalMessage("Oops! You didn't find them all.");
-      }, 700);
-    }
   }, [timer, gameOver]);
 
   //startTimer
