@@ -301,7 +301,7 @@ const SecondScreen = () => {
         </div>
       </Modal>
 
-      <Grid container spacing={2} className="game-grid">
+      <Grid container spacing={1} className="game-grid">
         {cards.map((card, index) => (
           <Grid item xs={3} key={`${gameCount}-${index}`}> 
             <div
